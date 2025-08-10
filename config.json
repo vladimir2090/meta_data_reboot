@@ -1,0 +1,7 @@
+{
+  "music_folder": "C:/Users/admin/Desktop/music_noformat",
+  "tags": ["title", "artist", "album", "date", "genre", "tracknumber", "albumartist"],
+  "rename_format": "{artist} - {title} [{album}].mp3",
+  "chunk_size": 10,
+  "auto_save": false
+}
