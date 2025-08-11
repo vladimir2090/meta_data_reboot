@@ -1,7 +1,8 @@
 {
   "music_folder": "C:/Users/admin/Desktop/music_noformat",
   "tags": ["title", "artist", "album", "date", "genre", "tracknumber", "albumartist"],
+  "model_promt": "Обработай эти MP3 метаданные и предложи исправления:\n{metadata}",
   "rename_format": "{artist} - {title} [{album}].mp3",
-  "chunk_size": 10,
-  "auto_save": false
+  "model_path": "C:/Users/admin/Desktop/ai/gemma-3-4b-it-Q4_K_M.gguf",
+  "chunk_size": 10
 }
