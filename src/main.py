@@ -28,7 +28,10 @@ class MusicProcessor:
     def extract_and_process(self, file_path):
         try:
             audio = EasyID3(file_path)
-            meta_data = {tag: audio[tag][0] for tag in self.tags if tag in audio}
+            meta_data = {
+                tag: audio[tag][0] if tag in audio and audio[tag] else 'N'
+                for tag in self.tags
+            }
         except Exception as e:
             print(f"[ERROR] Metadata read failed for {file_path}: {e}")
             return False
