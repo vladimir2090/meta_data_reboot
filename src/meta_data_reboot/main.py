@@ -7,8 +7,7 @@ import os
 import json
 
 class MusicProcessor:
-    __slots__ = ('llm', 'music_folder', 'music_recode_folder', 'tags',
-                 'system_prompt', 'rename_format', 'chunk_size')
+    __slots__ = ('llm', 'music_folder', 'music_recode_folder', 'tags', 'system_prompt', 'rename_format', 'chunk_size', "STOPWORDS")
 
     def __init__(self, config_path: str = "config.json"):
         # read settings from config.json
@@ -21,6 +20,7 @@ class MusicProcessor:
         self.system_prompt = config["system_prompt"]
         self.rename_format = config["rename_format"]
         self.chunk_size = config["chunk_size"]
+        self.STOPWORDS = config["STOPWORDS"]
 
         try:
             self.llm = Llama(
@@ -124,6 +124,8 @@ class MusicProcessor:
 
         print(f"Processed: {processed_count}/{len(mp3_files)}")
 
+def main():
+    MusicProcessor().run()
 
 if __name__ == "__main__":
-    MusicProcessor().run()
+    main()
