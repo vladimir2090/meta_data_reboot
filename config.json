@@ -3,7 +3,7 @@
   "music_recode_folder": "C:/Users/admin/Desktop/music_format",
   "model_path": "C:/Users/admin/Desktop/ai/gemma-3-4b-it-Q5_K_M.gguf",
 
-  "system_prompt": "Analyze all metadata and file names, based on this, issue corrected metadata and corrected name",
+  "system_prompt": "Fix and standardize metadata and filenames. Always correct errors. If album is empty or invalid, set it equal to track title.",
   "rename_format": "{artist} - {title} [{album}].mp3",
 
   "chunk_size": 10,

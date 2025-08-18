@@ -20,7 +20,7 @@ class MusicProcessor:
         self.system_prompt = config["system_prompt"]
         self.rename_format = config["rename_format"]
         self.chunk_size = config["chunk_size"]
-        self.STOPWORDS = config["STOPWORDS"]
+        self.STOPWORDS = tuple(config["STOPWORDS"])
 
         try:
             self.llm = Llama(
@@ -34,17 +34,27 @@ class MusicProcessor:
             self.llm = None
 
         os.makedirs(self.music_recode_folder, exist_ok=True)
-
+    def clean_stopwords(self, text: str) -> str:
+        if not text or text == "N":
+            return text
+        cleaned = text
+        for word in self.STOPWORDS:
+            if word.lower() in cleaned.lower():
+                cleaned = cleaned.replace(word, "").strip()
+        return " ".join(cleaned.split())
+    
     def extract_metadata(self, file_path):
         try:
             audio = EasyID3(file_path)
-            return {
-                "filename": os.path.basename(file_path),
-                "metadata": {
-                    tag: audio[tag][0] if tag in audio and audio[tag] else 'N'
-                    for tag in self.tags
-                }
+            metadata = {
+                tag: audio[tag][0] if tag in audio and audio[tag] else 'N'
+                for tag in self.tags
             }
+            metadata = {k: self.clean_stopwords(v) for k, v in metadata.items()}
+            
+            filename = os.path.basename(file_path)
+            filename = self.clean_stopwords(filename)
+            return {"filename": os.path.basename(file_path), "metadata": metadata}
         except Exception as e:
             print(f"[ERROR] Metadata read failed for {file_path}: {e}")
             return None

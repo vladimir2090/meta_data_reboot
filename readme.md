@@ -1,92 +1,141 @@
 # meta_data_reboot
 
-A Python script for modifying file metadata using AI assistance with ease and flexibility.
+Tool for cleaning and correcting music file names and metadata with local AI
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![Python](https://img.shields.io/badge/python-3.7+-blue.svg)
-![Development Status](https://img.shields.io/badge/status-60%25%20complete-green.svg)
+![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
+![Development Status](https://img.shields.io/badge/status-90%25%20complete-green.svg)
+
+**Python tool for cleaning and correcting music file names and metadata using local AI**
+
+***
 
 ## 🚧 Development Status
 
-⚠️ **Progress Update!** This program has made significant progress (approximately 60% complete). Core functionality is working, but some features are still in development. Use with caution!
+**Progress:** 90%
+meta_data_reboot is in beta stage. Core features for editing music file metadata and filenames are ready. Additional improvements, optimizations, and format support are in progress. Please make sure to properly configure `config.json` for optimal operation.
+
+***
 
 ## 📝 Description
 
-**meta_data_reboot** is a Python utility that combines metadata extraction with AI-powered processing to help users analyze and modify file metadata intelligently. The tool uses local AI models to process metadata and suggest improvements.
+**meta_data_reboot** helps you quickly fix metadata and filenames for hundreds of music files with ease.
+**Key features:**
 
-## 🎯 Current Features
+- Cleans up metadata and filenames (requires title and artist present in source files)
+- Uses local AI models (Llama) for smart analysis and correction
+- Batch processing for large collections
 
-✅ **MP3 Metadata Parser** - Extract metadata from MP3 files using mutagen library  
-✅ **AI Model Integration** - Process metadata using local Llama models  
-✅ **Chunk Processing** - Handle large batches of files efficiently  
-✅ **Error Handling** - Basic error logging and exception management  
-✅ **Configuration System** - JSON-based configuration for flexibility  
+***
 
-## 📋 TODO List
+## 🎯 Features
 
-- [x] **Parser implementation** - ✅ Core functionality to read and extract metadata from MP3 files
-- [x] **config.json file** - ✅ Configuration system for model settings, tags, and processing parameters
-- [x] **Data model integration** - ✅ Send and process metadata through AI model with chunked processing
-- [x] **Basic error handling** - ✅ Exception management and error logging implemented
-- [ ] **Modified file creation** - Generate new files with updated metadata based on AI suggestions
-- [ ] **Cross-platform installation** - Simple installation scripts for Windows, macOS, and Linux
+- **MP3 Metadata Parsing**: Reliable extraction via `mutagen`
+- **AI Integration**: Uses local Llama models for processing
+- **Batch Processing**: Edit large libraries in one go
+- **JSON Configuration**: Custom processing options, model paths, tags, and renaming formats
 
-## 🔧 What's Currently Working
+***
 
-Based on the current codebase:
+## 📋 TODO
 
-**Metadata Extraction**: The parser successfully extracts metadata from MP3 files including:
-- Artist, Album, Title, Date, Genre and other configurable tags
-- Uses mutagen.easyid3 for reliable MP3 metadata handling
+- [x] Core: AI metadata suggestions + updated file creation
+- [x] `config.json` customization
+- [x] Add `setup.py` for installation
+- [ ] Optimize \& compress redundant metadata
+- [ ] Add `pyproject.toml` for modern project management
 
-**AI Processing**: 
-- Integration with Llama.cpp for local AI model processing
-- Configurable prompts for metadata analysis
-- Chunked processing to handle large music libraries efficiently
+***
 
-**Configuration Management**:
-- JSON-based config for model paths, processing settings, and metadata tags
-- Flexible chunk size configuration for batch processing
+## 🔧 Current Functionality
 
-**Error Handling**:
-- Try-catch blocks for file processing errors
-- Model loading error management
-- Graceful handling of missing or corrupted metadata
+**Metadata Extraction**
 
-## 🛠️ Installation & Setup
+- Extracts artist, album, title, date, genre, etc. – configurable tags
+- Based on `mutagen.easyid3` for robust MP3 support
 
-1. git clone https://github.com/yourusername/meta_data_reboot.git
-2. cd meta_data_reboot
-3. pip install mutagen, llama-cpp-python, json
-4. recomend: pip install shutil
+**AI Processing**
 
-## 💡 Usage
+- Integrated with `Llama.cpp`
+- Customizable AI prompts for analysis
+- Efficient chunk-wise library processing
 
-*Usage examples and documentation will be provided as development progresses.*
+**Configuration**
+
+- Configurable via JSON: model paths, options, tags
+- Adjustable batch size for big libraries
+
+**Error Handling**
+
+- Safe metadata/file error management
+- Graceful model loading failures
+
+***
+
+## 🛠️ Installation \& Usage
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/vladimir2090/meta_data_reboot.git
+cd meta_data_reboot
+```
+
+2. Install via setup.py:
+
+```bash
+pip install .
+```
+
+3. Download an AI model in GGUF format (recommended: Gemma 3 4B).
+4. Configure your `config.json` (model paths, folders, tags, renaming, AI prompts).
+5. Run in terminal:
+
+```
+meta-reboot
+```
+
+⚠️ Proper `config.json` configuration is required for successful operation!
+
+***
 
 ## 🤝 Contributing
 
-**Help is greatly appreciated!** This project is created by a beginner developer who is learning and growing. Whether you're an experienced programmer or just starting out, your contributions are welcome.
+**Every contribution is important!**
 
-Ways you can help:
-- Report bugs and issues
-- Suggest new features
-- Contribute code improvements
-- Help with documentation
-- Share feedback and ideas
+- Bug reports
+- Feature suggestions
+- Code improvements
+- Documentation
+- Feedback and ideas
 
-Feel free to open issues or submit pull requests. Every contribution, no matter how small, makes a difference!
+The project is developed by a beginner Python programmer, and community support is invaluable.
+
+***
 
 ## 📄 License
 
-**meta_data_reboot** is distributed under the GNU General Public License v3.0. This means you can freely use, modify, and share this program, as long as you keep the same license for any work based on it.
+meta_data_reboot is released under the GNU GPL v3 license.
+Feel free to use, modify, and distribute the code, provided your changes keep the same license.
+See LICENSE for more details.
 
-See the [LICENSE](LICENSE) file for full details.
+***
 
-## 👨‍💻 Author
+## 🧑💻 Contact \& Links
 
-Created with ❤️ by a passionate beginner developer learning Python and exploring the world of file management tools.
+**Author \& Maintainer:**
+[GitHub: vladimir2090](https://github.com/vladimir2090)
 
----
+**Repository:**
+[meta_data_reboot GitHub repo](https://github.com/vladimir2090/meta_data_reboot)
 
-*This project is actively under development. Star ⭐ this repository to stay updated on progress!*
+**For suggestions, feedback, or collaboration:**
+
+- GitHub Issues at the repository page
+- Direct message: [@vladimir2090 at GitHub](https://github.com/vladimir2090)
+
+***
+
+⭐ Star this project to follow updates and development progress!
+
+***
