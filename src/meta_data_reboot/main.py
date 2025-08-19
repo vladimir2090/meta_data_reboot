@@ -42,20 +42,21 @@ class MusicProcessor:
         for word in self.stopwords:
             if word.lower() in cleaned.lower():
                 cleaned = cleaned.replace(word, "").strip()
-        return " ".join(cleaned.split())
+        cleaned = " ".join(cleaned.split())
+        return cleaned if cleaned else "N"
     
     def extract_metadata(self, file_path):
         try:
             audio = EasyID3(file_path)
             metadata = {
-                tag: audio[tag][0] if tag in audio and audio[tag] else 'N'
+                tag: audio[tag][0] if tag in audio and audio[tag] and audio[tag][0].strip() else 'N'
                 for tag in self.tags
             }
             metadata = {k: self.clean_stopwords(v) for k, v in metadata.items()}
             
             filename = os.path.basename(file_path)
             filename = self.clean_stopwords(filename)
-            return {"filename": os.path.basename(file_path), "metadata": metadata}
+            return {"filename": filename, "metadata": metadata}
         except Exception as e:
             print(f"[ERROR] Metadata read failed for {file_path}: {e}")
             return None
@@ -85,6 +86,7 @@ class MusicProcessor:
         except Exception as e:
             print(f"[ERROR] AI processing failed: {e}")
             return None
+        
     def apply_changes(self, file_path, new_name, new_metadata):
         try:
             new_path = Path(self.music_recode_folder) / new_name
@@ -92,11 +94,12 @@ class MusicProcessor:
 
             audio = MP3(new_path, ID3=EasyID3)
             for tag, value in new_metadata.items():
-                if value and value != "N":
-                    audio[tag] = value
+                if not value or value.strip() == "":
+                    value = "N"
+                audio[tag] = value
 
             if self.remove_images:
-                if audio.tags:
+                if audio.tags:  
                     to_delete = [tag for tag in audio.tags.keys() if tag.startswith("APIC")]
                     for tag in to_delete:
                         del audio.tags[tag]
