@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="meta_data_reboot",
-    version="0.9.1",
+    version="1.0.0",
     description="Tool for cleaning and correcting music file names and metadata with local AI",
     author="Vladimir2090",
     author_email="zvladzubkov@gmail.com",

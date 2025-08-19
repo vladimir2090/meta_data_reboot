@@ -7,7 +7,7 @@ import os
 import json
 
 class MusicProcessor:
-    __slots__ = ('llm', 'music_folder', 'music_recode_folder', 'tags', 'system_prompt', 'rename_format', 'chunk_size', "STOPWORDS")
+    __slots__ = ('llm', 'music_folder', 'music_recode_folder', 'tags', 'system_prompt', 'rename_format', 'chunk_size', "stopwords", "remove_images")
 
     def __init__(self, config_path: str = "config.json"):
         # read settings from config.json
@@ -20,7 +20,8 @@ class MusicProcessor:
         self.system_prompt = config["system_prompt"]
         self.rename_format = config["rename_format"]
         self.chunk_size = config["chunk_size"]
-        self.STOPWORDS = tuple(config["STOPWORDS"])
+        self.stopwords = tuple(config["stopwords"])
+        self.remove_images = config["remove_images"]
 
         try:
             self.llm = Llama(
@@ -38,7 +39,7 @@ class MusicProcessor:
         if not text or text == "N":
             return text
         cleaned = text
-        for word in self.STOPWORDS:
+        for word in self.stopwords:
             if word.lower() in cleaned.lower():
                 cleaned = cleaned.replace(word, "").strip()
         return " ".join(cleaned.split())
@@ -84,7 +85,6 @@ class MusicProcessor:
         except Exception as e:
             print(f"[ERROR] AI processing failed: {e}")
             return None
-
     def apply_changes(self, file_path, new_name, new_metadata):
         try:
             new_path = Path(self.music_recode_folder) / new_name
@@ -94,6 +94,13 @@ class MusicProcessor:
             for tag, value in new_metadata.items():
                 if value and value != "N":
                     audio[tag] = value
+
+            if self.remove_images:
+                if audio.tags:
+                    to_delete = [tag for tag in audio.tags.keys() if tag.startswith("APIC")]
+                    for tag in to_delete:
+                        del audio.tags[tag]
+
             audio.save()
 
             print(f"[OK] {os.path.basename(file_path)} -> {new_name}")

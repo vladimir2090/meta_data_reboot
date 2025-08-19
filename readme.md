@@ -9,11 +9,12 @@ Tool for cleaning and correcting music file names and metadata with local AI
 **Python tool for cleaning and correcting music file names and metadata using local AI**
 
 ***
+## 🚀 Release Status
 
-## 🚧 Development Status
-
-**Progress:** 90%
-meta_data_reboot is in beta stage. Core features for editing music file metadata and filenames are ready. Additional improvements, optimizations, and format support are in progress. Please make sure to properly configure `config.json` for optimal operation.
+**Progress:** 100%  
+meta_data_reboot has reached its first stable release (v1.0.0).  
+Core features for editing music file metadata and filenames are complete and ready for production use.  
+Future updates will focus on additional optimizations, extended format support, and optional AI-powered metadata improvements.
 
 ***
 

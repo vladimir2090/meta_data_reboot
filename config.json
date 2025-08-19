@@ -5,6 +5,7 @@
 
   "system_prompt": "Fix and standardize metadata and filenames. Always correct errors. If album is empty or invalid, set it equal to track title.",
   "rename_format": "{artist} - {title} [{album}].mp3",
+  "remove_images": false,
 
   "chunk_size": 10,
   "tags": [
@@ -17,13 +18,13 @@
     "albumartist"
   ],
 
-  "STOPWORDS": [
+  "stopwords": [
     "zaycev.net",
-    "russiion",
-    "2017 music",
-    "mp3russia",
-    "muzofon",
-    "promo dj",
-    "official audio"
+    "Best Of 1990 - 2010",
+    "ВсеСаундтреки.рф",
+    "100 Movie Hits",
+    "100% Hits - 90's",
+    "official audio",
+    "Summer Music 2017"
   ]
 }
