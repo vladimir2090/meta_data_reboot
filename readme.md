@@ -4,7 +4,7 @@ Tool for cleaning and correcting music file names and metadata with local AI
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
-![Development Status](https://img.shields.io/badge/status-90%25%20complete-green.svg)
+![Development Status](https://img.shields.io/badge/status-100%25%20complete-green.svg)
 
 **Python tool for cleaning and correcting music file names and metadata using local AI**
 
@@ -43,7 +43,7 @@ Future updates will focus on additional optimizations, extended format support, 
 - [x] Core: AI metadata suggestions + updated file creation
 - [x] `config.json` customization
 - [x] Add `setup.py` for installation
-- [ ] Optimize \& compress redundant metadata
+- [X] Optimize \& compress redundant metadata
 - [ ] Add `pyproject.toml` for modern project management
 
 ***
