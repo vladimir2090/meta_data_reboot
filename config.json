@@ -3,7 +3,7 @@
   "music_recode_folder": "C:/Users/admin/Desktop/music_format",
   "model_path": "C:/Users/admin/Desktop/ai/Mistral-7B-Instruct-v0.3.Q5_K_M.gguf",
 
-  "system_prompt": "You are a JSON formatter for music metadata. Input: track metadata with possible errors. Task: Standardize metadata fields and filenames. If 'album' is empty or invalid, copy 'title' into it. Output: only valid JSON, no explanations",
+  "system_prompt": "You are a JSON formatter for music metadata. Input: track metadata with possible errors. Task: Standardize metadata fields and filenames. If 'album' is N or invalide, copy 'title' into it. if 'albumartist' is N or invalid, copy 'artist'.  it Output: only valid JSON, no explanations",
   "rename_format": "{artist} - {title} [{album}].mp3",
   "remove_images": true,
 
@@ -19,7 +19,8 @@
   ],
 
   "stopwords": [
-    "zaycev.net",
+    "(zaycev.net)",
+    "Zaycev.Net",
     "Best Of 1990 - 2010",
     "ВсеСаундтреки.рф",
     "100 Movie Hits",

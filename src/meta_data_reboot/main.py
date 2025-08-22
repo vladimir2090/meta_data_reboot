@@ -1,11 +1,13 @@
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
+from mutagen.id3 import ID3
 from llama_cpp import Llama
 from pathlib import Path
 import shutil
 import os
 import re
 import json
+import atexit
 
 class MusicProcessor:
     __slots__ = ('llm', 'music_folder', 'music_recode_folder', 'tags', 'system_prompt', 'rename_format', 'chunk_size', "stopwords", "remove_images")
@@ -29,12 +31,20 @@ class MusicProcessor:
                 n_ctx=4096,
                 n_threads=os.cpu_count() or 4
             )
+            atexit.register(self._cleanup_llm)
             print("Model loaded")
         except Exception as e:
             print(f"[ERROR] Model load failed: {e}")
             self.llm = None
 
         os.makedirs(self.music_recode_folder, exist_ok=True)
+
+    def _cleanup_llm(self):
+        if hasattr(self, 'llm') and self.llm is not None:
+            try:
+                self.llm.close()
+            except:
+                pass
 
     def clean_stopwords(self, text: str) -> str:
         if not text or text == "N":
@@ -54,13 +64,13 @@ class MusicProcessor:
                 for tag in self.tags
             }
 
-            ai_metadata = {k: self.clean_stopwords(v) for k, v in metadata.items()}
+            cleaned_metadata = {k: self.clean_stopwords(v) for k, v in metadata.items()}
             filename = os.path.basename(file_path)
-            ai_filename = self.clean_stopwords(filename)
-
-            return {"filename": filename, "ai_filename": ai_filename, "metadata": metadata, "ai_metadata": ai_metadata}
+            cleaned_filename = self.clean_stopwords(filename)
+            
+            return {"filename": filename, "cleaned_filename": cleaned_filename, "metadata": cleaned_metadata}
         except Exception as e:
-            print(f"[ERROR] Metadata read failed for {file_path}: {e}")
+            print(f"[SKIP] Corrupted file {file_path}: {e}")
             return None
 
     def process_batch(self, batch):
@@ -73,7 +83,7 @@ class MusicProcessor:
             result = self.llm(
                 f"[INST]\n{prompt}\n[/INST]",
                 max_tokens=1024,         
-                temperature=0.3,
+                temperature=0.6,
                 top_p=0.9,
                 top_k=50,
                 min_p=0.05,
@@ -91,15 +101,23 @@ class MusicProcessor:
                 print("FULL RESULT:", result)
                 with open("debug_ai_response.txt", "w", encoding="utf-8") as f:
                     f.write(raw)
-                try:
-                    return json.loads(ai_text)
-                except json.JSONDecodeError:
-                    print(f"[ERROR] Failed to parse AI JSON output:\n{ai_text[:1000]}...")
-                    return None
+                return self.parse_ai_response(ai_text)
         except Exception as e:
             print(f"[ERROR] AI processing failed: {e}")
             return None
-        
+
+    def parse_ai_response(self, ai_text: str):
+        try:
+            return json.loads(ai_text)
+        except:
+            match = re.search(r'\[.*\]', ai_text, re.DOTALL)
+            if match:
+                try:
+                    return json.loads(match.group())
+                except:
+                    pass
+            return None
+
     def apply_changes(self, file_path, new_name, new_metadata):
         try:
             temp_path = Path(self.music_recode_folder) / Path(file_path).name
@@ -113,10 +131,13 @@ class MusicProcessor:
                     value = "N"
                 audio[tag] = value
 
-            if self.remove_images and audio.tags:
-                to_delete = [tag for tag in audio.tags.keys() if tag.startswith("APIC")]
-                for tag in to_delete:
-                    del audio.tags[tag]
+            if self.remove_images:
+                id3_tags = ID3(temp_path)
+                apic_keys = [key for key in id3_tags.keys() if key.startswith('APIC')]
+                for key in apic_keys:
+                    del id3_tags[key]
+                if apic_keys:
+                    id3_tags.save()
 
             audio.save()
 
@@ -151,11 +172,18 @@ class MusicProcessor:
 
             for old_data, new_data in zip(batch, ai_output):
                 old_file = Path(self.music_folder) / old_data["filename"]
-
                 try:
-                    new_file_name = self.rename_format.format(**new_data["metadata"])
+                    metadata = new_data.get("metadata", {})
+                    required_fields = ["artist", "title", "album"]
+                    
+                    safe_metadata = {}
+                    for field in required_fields:
+                        safe_metadata[field] = metadata.get(field, "Unknown")
+                    
+                    new_file_name = self.rename_format.format(**safe_metadata)
                     print(new_file_name)
-                except KeyError:
+                except (KeyError, ValueError) as e:
+                    print(f"[WARNING] Filename format error: {e}, using original name")
                     new_file_name = old_data["filename"]
 
                 if self.apply_changes(old_file, new_file_name, new_data["metadata"]):
