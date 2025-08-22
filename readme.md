@@ -11,7 +11,7 @@ Tool for cleaning and correcting music file names and metadata with local AI
 ***
 ## 🚀 Release Status
 
-**Progress:** 100%  
+**Progress:** 90%  
 meta_data_reboot has reached its first stable release (v1.0.0).  
 Core features for editing music file metadata and filenames are complete and ready for production use.  
 Future updates will focus on additional optimizations, extended format support, and optional AI-powered metadata improvements.
@@ -88,7 +88,7 @@ cd meta_data_reboot
 pip install .
 ```
 
-3. Download an AI model in GGUF format (recommended: Gemma 3 4B).
+3. Download an AI model in GGUF format (recommended: Mistral-7B-Instruct-v0.3).
 4. Configure your `config.json` (model paths, folders, tags, renaming, AI prompts).
 5. Run in terminal:
 
