@@ -1,7 +1,7 @@
 from .main import MusicProcessor, main
 
 __all__ = ["MusicProcessor", "main"]
-__version__ = "0.9.3"
+__version__ = "1.0.0"
 
 def info():
-    return f"meta_data_reboot v{__version__} — Music metadata processor with AI."
+    return f"metadata-reboot v{__version__} — Music metadata processor with AI."

@@ -5,7 +5,7 @@
 
   "system_prompt": "You are a JSON formatter for music metadata. Input: track metadata with possible errors. Task: Standardize metadata fields and filenames. If 'album' is N or invalide, copy 'title' into it. if 'albumartist' is N or invalid, copy 'artist'.  it Output: only valid JSON, no explanations",
   "rename_format": "{artist} - {title} [{album}].mp3",
-  "remove_images": true,
+  "remove_images": false,
 
   "chunk_size": 5,
   "tags": [
@@ -26,6 +26,7 @@
     "100 Movie Hits",
     "100% Hits - 90's",
     "official audio",
+    "новая музыка",
     "Summer Music 2017"
   ]
 }
